@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -22,6 +23,8 @@ public class Marca {
     @Column(name = "nome", length = 100, nullable = false)
     private String nome;
 
+    @OneToMany(mappedBy = "marca", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Carro> carros;
 
 
     // Getters and Setters
@@ -31,5 +34,13 @@ public class Marca {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public list<Carro> getCarros() {
+        return carros;
+    }
+
+    public void setCarros(List<Carro> carros) {
+        this.carros = carros;
     }
 }

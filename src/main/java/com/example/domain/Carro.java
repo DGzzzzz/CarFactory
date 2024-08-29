@@ -1,10 +1,16 @@
 package com.example.domain;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -24,6 +30,18 @@ public class Carro {
 
     @Column(name = "ano", length = 4, nullable = false)
     private Integer ano;
+
+    @ManyToOne
+    @JoinColumn(name = "marca_id", nullable = false)
+    private Marca marca;
+
+    @ManyToMany
+    @JoinTable(
+        name = "carro_acessorio",
+        joinColumns = @JoinColumn(name = "carro_id"),
+        inverseJoinColumns = @JoinColumn(name = "acessorio_id")
+    )
+    private List<Acessorio> acessorios;
 
 
     // Getters and Setters
@@ -49,5 +67,13 @@ public class Carro {
 
     public void setAno(Integer ano) {
         this.ano = ano;
+    }
+
+    public List<Acessorio> getAcessorios() {
+        return acessorios;
+    }
+
+    public void setAcessorios(List<Acessorio> acessorios) {
+        this.acessorios = acessorios;
     }
 }
