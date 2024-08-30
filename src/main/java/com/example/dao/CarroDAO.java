@@ -7,6 +7,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -48,8 +49,15 @@ public class CarroDAO implements ICarroDAO {
         Root<Carro> root = cq.from(Carro.class);
         cq.select(root).where(cb.equal(root.get("id"), id));
         TypedQuery<Carro> query = session.createQuery(cq);
-        Carro carro = query.getSingleResult();
-        session.close();
+        Carro carro = null;
+        try {
+            carro = query.getSingleResult();
+            Hibernate.initialize(carro.getAcessorios());
+        } catch (Exception e) {
+            System.out.println("Nenhum resultado encontrado para a query");
+        } finally {
+            session.close();
+        }
         return carro;
     }
 
