@@ -1,5 +1,7 @@
 package com.example.dao;
 
+import java.util.List;
+
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -49,5 +51,18 @@ public class CarroDAO implements ICarroDAO {
         Carro carro = query.getSingleResult();
         session.close();
         return carro;
+    }
+
+    @Override
+    public List<Carro> findAll() {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        CriteriaBuilder cb = session.getCriteriaBuilder();
+        CriteriaQuery<Carro> cq = cb.createQuery(Carro.class);
+        Root<Carro> root = cq.from(Carro.class);
+        cq.select(root);
+        TypedQuery<Carro> query = session.createQuery(cq);
+        List<Carro> carros = query.getResultList();
+        session.close();
+        return carros;
     }
 }
