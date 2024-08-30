@@ -13,5 +13,5 @@
         "**/.classpath": true,
         "**/.settings": true,
         "**/target": true
-    }
+    } 
 }
