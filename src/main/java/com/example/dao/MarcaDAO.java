@@ -2,42 +2,42 @@ package com.example.dao;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import com.example.domain.Marca;
 
-import com.example.domain.Carro;
+public class MarcaDAO implements IMarcaDAO {
 
-public class CarroDAO implements ICarroDAO {
     @Override
-    public void save(Carro carro) {
+    public void save(Marca marca) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
-        session.save(carro);
+        session.save(marca);
         transaction.commit();
         session.close();
     }
 
     @Override
-    public void update(Carro carro) {
+    public void update(Marca marca) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
-        session.update(carro);
+        session.update(marca);
         transaction.commit();
         session.close();
     }
 
     @Override
-    public void delete(Carro carro) {
+    public void delete(Marca marca) {
         Session session = HibernateUtil.getSessionFactory().openSession();
         Transaction transaction = session.beginTransaction();
-        session.delete(carro);
+        session.delete(marca);
         transaction.commit();
         session.close();
     }
 
     @Override
-    public Carro findById(Long id) {
+    public Marca findById(Long id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        Carro carro = session.get(Carro.class, id);
+        Marca marca = session.get(Marca.class, id);
         session.close();
-        return carro;
+        return marca;
     }
 }

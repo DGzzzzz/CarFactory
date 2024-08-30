@@ -1,5 +1,8 @@
 package com.example.domain;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -28,6 +31,22 @@ public class Marca {
 
 
     // Getters and Setters
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
+    }
+
     public String getNome() {
         return nome;
     }
@@ -36,7 +55,7 @@ public class Marca {
         this.nome = nome;
     }
 
-    public list<Carro> getCarros() {
+    public List<Carro> getCarros() {
         return carros;
     }
 

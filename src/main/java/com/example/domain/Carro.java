@@ -45,6 +45,14 @@ public class Carro {
 
 
     // Getters and Setters
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getCodigo() {
         return codigo;
     }
@@ -67,6 +75,14 @@ public class Carro {
 
     public void setAno(Integer ano) {
         this.ano = ano;
+    }
+    
+    public void setMarca(Marca marca) {
+        this.marca = marca;
+    }
+
+    public Marca getMarca() {
+        return marca;
     }
 
     public List<Acessorio> getAcessorios() {

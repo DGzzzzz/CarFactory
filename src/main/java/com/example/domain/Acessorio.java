@@ -1,5 +1,7 @@
 package com.example.domain;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,7 +23,7 @@ public class Acessorio {
     private Long id;
 
     @Column(name = "codigo", length = 10, nullable = false, unique = true)
-    private String descricao;
+    private String codigo;
 
     @Column(name = "nome", length = 100, nullable = false)
     private String nome;
@@ -49,6 +51,14 @@ public class Acessorio {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getCodigo() {
+        return codigo;
+    }
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
     }
 
     public String getDescricao() {

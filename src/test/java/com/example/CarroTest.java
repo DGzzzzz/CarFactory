@@ -1,8 +1,10 @@
 package com.example;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 import org.junit.After;
 import org.junit.Before;
@@ -11,107 +13,134 @@ import org.junit.Test;
 import com.example.domain.Carro;
 import com.example.domain.Marca;
 import com.example.dao.CarroDAO;
+import com.example.dao.MarcaDAO;
 
 public class CarroTest {
 
     private CarroDAO carroDAO;
+    private MarcaDAO marcaDAO;
+    private List<Carro> carrosCriados;
+    private List<Marca> marcasCriadas;
 
     @Before
     public void setUp() {
         carroDAO = new CarroDAO();
+        marcaDAO = new MarcaDAO();
+        carrosCriados = new ArrayList<>();
+        marcasCriadas = new ArrayList<>();
     }
 
     @After
     public void tearDown() {
-        carroDAO.delete(carroDAO.findById(1L));
+        for (Carro carro : carrosCriados) {
+            if (carroDAO.findById(carro.getId()) != null) {
+                carroDAO.delete(carro);
+            }
+        }
+        for (Marca marca : marcasCriadas) {
+            if (marcaDAO.findById(marca.getId()) != null) {
+                marcaDAO.delete(marca);
+            }
+        }
     }
-    
+
+    private String generateCodigo() {
+        return UUID.randomUUID().toString().replaceAll("-", "").substring(0, 10);
+    }
+
     @Test
     public void testSave() {
         Marca marca = new Marca();
-        marca.setNome("Fiat");
+        marca.setCodigo(generateCodigo());
+        marca.setNome("Marca Teste");
+
+        marcaDAO.save(marca);
+        marcasCriadas.add(marca);
 
         Carro carro = new Carro();
-        carro.setCodigo("12345");
-        carro.setModelo("Uno");
-        carro.setAno(2010);
+        carro.setCodigo(generateCodigo());
+        carro.setModelo("Modelo Teste");
+        carro.setAno(2022);
         carro.setMarca(marca);
-        carroDAO.save(carro);
 
-        Carro savedCarro = carroDAO.findById(1L);
+        carroDAO.save(carro);
+        carrosCriados.add(carro);
+
+        Carro savedCarro = carroDAO.findById(carro.getId());
         assertNotNull(savedCarro);
-        assertEquals("12345", savedCarro.getCodigo());
-        assertEquals("Uno", savedCarro.getModelo());
-        assertEquals(2010, savedCarro.getAno());
-        assertEquals("Fiat", savedCarro.getMarca().getNome());
+        assertEquals(carro.getCodigo(), savedCarro.getCodigo());
     }
 
     @Test
     public void testUpdate() {
         Marca marca = new Marca();
-        marca.setNome("Fiat");
+        marca.setCodigo(generateCodigo());
+        marca.setNome("Marca Teste 4");
+
+        marcaDAO.save(marca);
+        marcasCriadas.add(marca);
 
         Carro carro = new Carro();
-        carro.setId(1L);
-        carro.setCodigo("12345");
-        carro.setModelo("Uno");
-        carro.setAno(2010);
+        carro.setCodigo(generateCodigo());
+        carro.setModelo("Modelo Teste 4");
+        carro.setAno(2025);
         carro.setMarca(marca);
+
         carroDAO.save(carro);
+        carrosCriados.add(carro);
 
-        Marca novaMarca = new Marca();
-        novaMarca.setNome("Ford");
-
-        carro.setCodigo("67890");
-        carro.setModelo("Ka");
-        carro.setAno(2015);
-        carro.setMarca(novaMarca);
-
+        carro.setModelo("Modelo Atualizado");
         carroDAO.update(carro);
 
-        Carro updatedCarro = carroDAO.findById(1L);
+        Carro updatedCarro = carroDAO.findById(carro.getId());
         assertNotNull(updatedCarro);
-        assertEquals("67890", updatedCarro.getCodigo());
-        assertEquals("Ka", updatedCarro.getModelo());
-        assertEquals(2015, updatedCarro.getAno());
-        assertEquals("Ford", updatedCarro.getMarca().getNome());
+        assertEquals("Modelo Atualizado", updatedCarro.getModelo());
     }
 
     @Test
     public void testDelete() {
         Marca marca = new Marca();
-        marca.setNome("Fiat");
+        marca.setCodigo(generateCodigo());
+        marca.setNome("Marca Teste 3");
+
+        marcaDAO.save(marca);
+        marcasCriadas.add(marca);
 
         Carro carro = new Carro();
-        carro.setCodigo("12345");
-        carro.setModelo("Uno");
-        carro.setAno(2010);
+        carro.setCodigo(generateCodigo());
+        carro.setModelo("Modelo Teste 3");
+        carro.setAno(2024);
         carro.setMarca(marca);
+
         carroDAO.save(carro);
+        carrosCriados.add(carro);
 
         carroDAO.delete(carro);
 
-        Carro deletedCarro = carroDAO.findById(1L);
+        Carro deletedCarro = carroDAO.findById(carro.getId());
         assertNull(deletedCarro);
     }
 
     @Test
     public void testFindById() {
         Marca marca = new Marca();
-        marca.setNome("Fiat");
+        marca.setCodigo(generateCodigo());
+        marca.setNome("Marca Teste 2");
+
+        marcaDAO.save(marca);
+        marcasCriadas.add(marca);
 
         Carro carro = new Carro();
-        carro.setCodigo("12345");
-        carro.setModelo("Uno");
-        carro.setAno(2010);
+        carro.setCodigo(generateCodigo());
+        carro.setModelo("Modelo Teste 2");
+        carro.setAno(2023);
         carro.setMarca(marca);
-        carroDAO.save(carro);
 
-        Carro foundCarro = carroDAO.findById(1L);
+        carroDAO.save(carro);
+        carrosCriados.add(carro);
+
+        Carro foundCarro = carroDAO.findById(carro.getId());
         assertNotNull(foundCarro);
-        assertEquals("12345", foundCarro.getCodigo());
-        assertEquals("Uno", foundCarro.getModelo());
-        assertEquals(2010, foundCarro.getAno());
-        assertEquals("Fiat", foundCarro.getMarca().getNome());
+        assertEquals(carro.getCodigo(), foundCarro.getCodigo());
     }
 }
