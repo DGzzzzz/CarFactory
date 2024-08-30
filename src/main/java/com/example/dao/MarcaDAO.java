@@ -2,6 +2,7 @@ package com.example.dao;
 
 import java.util.List;
 
+import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -48,10 +49,17 @@ public class MarcaDAO implements IMarcaDAO {
         Root<Marca> root = cq.from(Marca.class);
         cq.select(root).where(cb.equal(root.get("id"), id));
         TypedQuery<Marca> query = session.createQuery(cq);
-        Marca marca = query.getSingleResult();
-        session.close();
+        Marca marca = null;
+        try{
+            marca = query.getSingleResult();
+        } catch (NoResultException e) {
+            System.out.println("Nenhum resultado encontrado para a query");
+        } finally {
+            session.close();
+        }
         return marca;
     }
+    
 
     @Override
     public List<Marca> findAll() {

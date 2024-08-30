@@ -48,9 +48,15 @@ public class AcessorioDAO implements IAcessorioDAO {
         Root<Acessorio> root = cq.from(Acessorio.class);
         cq.select(root).where(cb.equal(root.get("id"), id));
         TypedQuery<Acessorio> query = session.createQuery(cq);
-        Acessorio acessorio = query.getSingleResult();
-        session.close();
-        return acessorio;
+        Acessorio acessorio = null;
+        try {
+            acessorio = query.getSingleResult();
+        } catch (Exception e) {
+            System.out.println("Nenhum resultado encontrado para a query");
+        } finally {
+            session.close();
+        }
+        return acessorio;   
     }
 
     @Override

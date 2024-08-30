@@ -1,9 +1,6 @@
 package com.example;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -59,6 +56,8 @@ public class MarcaTest {
     @Test
     public void testDelete() {
         marcaDAO.save(marca);
+        Marca foundMarca = marcaDAO.findById(marca.getId());
+        assertNotNull(foundMarca);
         marcaDAO.delete(marca);
         Marca deletedMarca = marcaDAO.findById(marca.getId());
         assertNull(deletedMarca);
