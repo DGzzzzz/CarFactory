@@ -1,5 +1,10 @@
 package com.example.dao;
 
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import com.example.domain.Marca;
@@ -36,7 +41,12 @@ public class MarcaDAO implements IMarcaDAO {
     @Override
     public Marca findById(Long id) {
         Session session = HibernateUtil.getSessionFactory().openSession();
-        Marca marca = session.get(Marca.class, id);
+        CriteriaBuilder cb = session.getCriteriaBuilder();
+        CriteriaQuery<Marca> cq = cb.createQuery(Marca.class);
+        Root<Marca> root = cq.from(Marca.class);
+        cq.select(root).where(cb.equal(root.get("id"), id));
+        TypedQuery<Marca> query = session.createQuery(cq);
+        Marca marca = query.getSingleResult();
         session.close();
         return marca;
     }
